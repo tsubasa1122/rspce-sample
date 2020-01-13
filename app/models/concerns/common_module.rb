@@ -10,7 +10,7 @@ module CommonModule
     
     validates :name, presence: true, length: { maximum: 16 }
     validates :mail, presence: true, length: { maximum: 64 }, format: { with: /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i }, uniqueness: { case_sensitive: false}
-    validates :age, presence: true, numericality: {{ only_integer: true, greater_than_or_equal_to: 0, less_than_or_equal_to: 100 }
+    validates :age, presence: true, numericality: {only_integer: true, greater_than_or_equal_to: 0, less_than_or_equal_to: 100 }
     validates :score, presence: true, numericality: { only_integer: true, greater_than_or_equal_to: 1, less_than_or_equal_to: 3 }
     validates :request, length: { maximum: 150 }
   end
