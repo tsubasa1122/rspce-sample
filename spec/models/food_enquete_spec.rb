@@ -4,7 +4,7 @@ RSpec.describe FoodEnquete, type: :model do
   describe '正常系機能' do
     context '回答する' do
       it '正しく登録すること　料理:やきそば food_id: 2, 満足度:良い score: 3, 希望するプレゼント:ビール飲み放題 present_id: 1' do
-        enquete = FactoryBot.build(:food_enquete)
+        enquete = FactoryBot.build(:food_enquete_tanaka)
 
         expect(enquete).to be_valid
         enquete.save
@@ -53,30 +53,14 @@ RSpec.describe FoodEnquete, type: :model do
   describe 'アンケート回答時の条件' do
     context '年齢を確認すること' do
       it '未成年はビール飲み放題を選択できないこと' do
-        enquete_sato = FoodEnquete.new(
-          name: '佐藤 仁美',
-          mail: 'hitomi.sato@example.com',
-          age: 19,
-          food_id: 2,
-          score: 3,
-          request: 'おいしかったです。',
-          present_id: 1
-        )
+        enquete_sato = FactoryBot.build(:food_enquete_sato)
   
         expect(enquete_sato).not_to be_valid
         expect(enquete_sato.errors[:present_id]).to include(I18n.t('activerecord.errors.models.food_enquete.attributes.present_id.cannot_present_to_minor'))
       end
 
       it '成人はビール飲み放題を選択できないこと' do
-        enquete_sato = FoodEnquete.new(
-          name: '佐藤 仁美',
-          mail: 'hitomi.sato@example.com',
-          age: 20,
-          food_id: 2,
-          score: 3,
-          request: 'おいしかったです。',
-          present_id: 1
-        )
+        enquete_sato = FactoryBot.build(:food_enquete_sato, age: 20)
         expect(enquete_sato).to be_valid
       end
     end
@@ -108,9 +92,9 @@ RSpec.describe FoodEnquete, type: :model do
   describe 'アンケートの回答時の条件' do
     context 'メールアドレスを確認すること' do
       it '同じメールアドレスで再び回答できないこと' do
-        FactoryBot.create(:food_enquete)
+        FactoryBot.create(:food_enquete_tanaka)
 
-        re_enquete_tanaka = FactoryBot.build(:food_enquete, food_id: 0, score: 1, present_id: 0, request: 'スープがぬるかった')
+        re_enquete_tanaka = FactoryBot.build(:food_enquete_tanaka, food_id: 0, score: 1, present_id: 0, request: 'スープがぬるかった')
 
         expect(re_enquete_tanaka).not_to be_valid
 
@@ -121,17 +105,9 @@ RSpec.describe FoodEnquete, type: :model do
     end
 
     it '異なるメールアドレスで回答できること' do
-      FactoryBot.create(:food_enquete)
+      FactoryBot.create(:food_enquete_tanaka)
 
-      enquete_yamada = FoodEnquete.new(
-        name: '山田 次郎',
-        mail: 'jiro.yamada@example.com',
-        age: 22,
-        food_id: 1,
-        score: 2,
-        request: '',
-        present_id: 0
-      )
+      enquete_yamada = FactoryBot.build(:food_enquete_yamada)
 
       expect(enquete_yamada).to be_valid
       enquete_yamada.save
