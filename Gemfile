@@ -31,4 +31,10 @@ group :development do
   gem 'spring-watcher-listen', '~> 2.0.0'
 end
 
+group :test do
+  gem 'capybara', '~> 3.28'
+  gem 'selenium-webdriver', '~> 3.142'
+  gem 'webdrivers', '~> 4.1'
+end
+
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
